@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI.csproj": {}
+    "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI.csproj": {
+    "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI.csproj",
+        "projectUniqueName": "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI.csproj",
         "projectName": "Import_Freight_BOI",
-        "projectPath": "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI.csproj",
+        "projectPath": "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI.csproj",
         "packagesPath": "C:\\Users\\010724\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\obj\\",
+        "outputPath": "C:\\Users\\010724\\Documents\\GitHub\\Freight_BOI\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
