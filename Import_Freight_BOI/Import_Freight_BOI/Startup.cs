@@ -23,6 +23,7 @@ namespace Import_Freight_BOI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var constr = Configuration.GetConnectionString("CONN");
             services.AddControllersWithViews();
         }
 
@@ -50,7 +51,7 @@ namespace Import_Freight_BOI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Login}/{id?}");
             });
         }
     }
