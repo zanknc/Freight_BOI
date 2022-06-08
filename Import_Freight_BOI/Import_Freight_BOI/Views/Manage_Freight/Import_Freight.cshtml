@@ -1,73 +1,222 @@
 ﻿
 @{
     ViewData["Title"] = "Import Freight BOI";
-    Layout = "~/Layout/_Layout_Menu.cshtml";
+    Layout = "~/Layout/_Menu.cshtml";
 }
-<div>
-    <h3 style="text-align: center; margin-top: 20px;">IMPORT FRIEGHT BOI</h3>
-    <br />
-    <br />
-    <div class="row">
-            <div class="col-md-1">
-                D/N
-            </div>
-            <div class="col-md-3">
-                <p> <input type="number" class="form-control" /></p>
-            </div>
-            <div class="col-md-4">
-                <p>YEAR MONTH <input type="date" class="form-control" /></p>
-            </div>
-            <div class="col-md-4">
-                <p>FORWARDER <select class="form-control"><option value="0"> -- select forwarder</option></select></p>
-            </div>
-            @*<div class="col-md-2">
-                <p>INVOICE <input type="text" class="form-control" /></p>
+@*<h3 style="text-align: center; margin-top: 20px; color: #787070;">IMPORT FRIEGHT BOI</h3>*@
+<div style="max-width: 100%; /*background-color: #f7f7f7;*/ background-color:white; padding: 50px; box-shadow: 0 30px 60px 0 rgb(0 0 0 / 15%); height:200%; ">
+
+
+    <div>
+        <div class="row">
+
+            <div class="col-md-2">
+                <p>D/N <input type="number" id="Txt_DN" name="Txt_DN" class="form-control" /></p>
             </div>
             <div class="col-md-2">
-                <p>RENT DAY <input type="text" class="form-control" /></p>
+                <p>YEAR MONTH <input type="date" id="Ddl_date" name="Ddl_date" class="form-control" /></p>
             </div>
-            <div class="col-md-2">*@
+            <div class="col-md-2">
+                <p>
+                    FORWARDER <select class="form-control" id="Ddl_Forwardd" name="Sl_Forwardd">
+                        <option value="0"> -- select forwarder --</option>
+
+                        @foreach (var item in ViewBag.Forwarder.Rows)
+                        {
+                            <option value="@item["ForwarderCode"]">@item["ForwarderName"]</option>
+                        }
+
+                    </select>
+
+                </p>
+            </div>
+            <div class="col-md-2">
+                <p>INVOICE <input type="text" class="form-control" id="Txt_Invoice" name="Txt_Invoice" /></p>
+            </div>
+            <div class="col-md-2">
+                <p>RENT DAY <input type="text" class="form-control" id="Txt_RentDay" name="Txt_RentDay" /></p>
+            </div>
+            <div class="col-md-2">
+
+            </div>
 
         </div>
-
-    </div> <br />
+    </div>
+    <br />
 
     <div class="row">
 
         <div class="col-md-2">
-            <p>TRANSPORT <select class="form-control"><option value="0"> -- select transport</option></select></p>
+            <p>
+                TRANSPORTATION <select class="form-control" id="Ddl_Transport" name="Ddl_Transport">
+                    <option value="0"> -- select Transportation --</option>
+                    @foreach (var item in ViewBag.Transportation.Rows)
+                    {
+                        <option value="@item["ShipmentCateg"]">@item["ShipmentName"]</option>
+                    }
+                </select>
+            </p>
         </div>
         <div class="col-md-2">
-            <p>DELIVERY <select class="form-control"><option value="0"> -- select delivery</option></select></p>
+            <p>
+                DELIVERY <select class="form-control" id="Ddl_Delivery" name="Ddl_Delivery">
+                    <option value="0"> -- select delivery --</option>
+
+                    @foreach (var item in ViewBag.Delivery.Rows)
+                    {
+                        <option value="@item["DeliveryCode"]">@item["DeliveryName"]</option>
+                    }
+                </select>
+            </p>
         </div>
         <div class="col-md-2">
-            <p>SUPPLIER  <select class="form-control"><option value="0"> -- select supplier</option></select></p>
+            <p>
+                SUPPLIER  <select class="form-control" id="Ddl_Supplier" name="Ddl_Supplier">
+                    <option value="0"> -- select supplier --</option>
+
+
+                    @foreach (var item in ViewBag.Supplier.Rows)
+                    {
+                        <option value="@item["SupplierCode"]">@item["SupplierName"]</option>
+                    }
+                </select>
+            </p>
         </div>
         <div class="col-md-2">
-            <p>V/W <input type="number" class="form-control" /></p>
+            <p>V/W <input type="number" class="form-control" id="Txt_VM" name="Txt_VM" /></p>
         </div>
         <div class="col-md-2">
-            <p>ETA DATE <input type="date" class="form-control" /></p>
+            <p>ETA DATE <input type="date" class="form-control" id="Txt_ETA" name="Txt_ETA" /></p>
         </div>
     </div>
+    <br />
     <div class="row">
 
         <div class="col-md-2">
-            <p>STORAGE CHANGE <input type="date" class="form-control" /></p>
+            <p>STORAGE CHANGE <input type="date" class="form-control" id="Txt_ETA" name="Txt_ETA" /></p>
         </div>
         <div class="col-md-2">
-            <p>COUNTRY <select class="form-control"><option value="0"> -- select country</option></select></p>
+            <p>
+                COUNTRY
+                <select class="form-control">
+                    <option value="0" id="Ddl_Country" name="Ddl_Country">-- select country --</option>
+                    @foreach (var item in ViewBag.Country.Rows)
+                    {
+                        <option value="@item["CountryCode"]">@item["CountryName"]</option>
+                    } }
+                </select>
+            </p>
         </div>
         <div class="col-md-2">
-           
+
         </div>
         <div class="col-md-2">
-           
+
         </div>
         <div class="col-md-2">
-           
+
         </div>
     </div>
+   <hr /><br />
+   <div style="overflow-x:auto;">
+
+
+
+       <table class="table table-bordered" id="Table_dataFeight">
+           <thead>
+               <tr>
+                   <th style="width:200px;">TITLE</th>
+                   <th scope="col">TERMINAL</th>
+                   <th scope="col">LICENSE</th>
+                   <th scope="col">FREIGHT</th>
+                   <th scope="col">ORIGIN</th>
+                   <th scope="col">SHIPPING</th>
+                   <th scope="col">VAT1</th>
+                   <th scope="col">BASE TAX 3%</th>
+                   <th scope="col">BASE TAX 1%</th>
+                   <th scope="col">VAT2</th>
+                   <th scope="col">ADVANCE</th>
+                   <th scope="col">APAMOUNT</th>
+               </tr>
+           </thead>
+           <tbody>
+               <tr>
+                   <th><input type="text" id="txt_title" name="" class="form-control" /></th>
+                   <td><input type="text" id="Txt_terminal" name="Txt_terminal" class="form-control" /></td>
+                   <td><input type="text" id="Txt_License" name="Txt_License" class="form-control" /></td>
+                   <td><input type="text" id="Txt_Freifht" name="Txt_Freifht" class="form-control" /></td>
+                   <td><input type="text" id="Txt_Origin" name="Txt_Origin" class="form-control" /></td>
+                   <td><input type="text" id="Txt_Shipping" name="Txt_Shipping" class="form-control" /></td>
+                   <td><input type="text" id="Txt_Vat1" name="Txt_Vat1" class="form-control" /></td>
+                   <td><input type="text" id="Txt_BTax3" name="Txt_BTax3" class="form-control" /></td>
+                   <td><input type="text" id="Txt_Btax1" name="Txt_Btax1" class="form-control" /></td>
+                   <td><input type="text" id="Txt_Vat2" name="Txt_Vat2" class="form-control" /></td>
+                   <td><input type="text" id="Txt_Advance" name="Txt_Advance" class="form-control" /></td>
+                   <td><input type="text" id="Txt_Apamount" name="Txt_Apamount" class="form-control" onkeypress="return InsertRowEnter(event)" /></td>
+
+               </tr>
+           </tbody>
+       </table>
+   </div>
 </div>
+<br />
+
+@*<div style="max-width:100%; background-color:white; padding:50px;">
+
+  </div>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+         getValueDdl();
 
 
+        window.addEventListener("scroll", function (event) {
+
+                left = this.scrollX;
+
+
+        }, false);
+
+    });
+    function InsertRowEnter(e) {
+        if (e.keyCode == "13") {
+            /*  alert("test");*/
+            var table = document.getElementById("Table_dataFeight");
+
+            var content = '<tr>' +
+
+                '<th><input type="text" id="txt_title" name="" class="form-control" /></th>' +
+                '<td><input type="text" id="Txt_terminal" name="Txt_terminal" class="form-control" /></td>' +
+                '<td><input type="text" id="Txt_License" name="Txt_License" class="form-control" /></td>' +
+                '<td><input type="text" id="Txt_Freifht" name="Txt_Freifht" class="form-control" /></td>' +
+                '<td><input type="text" id="Txt_Origin" name="Txt_Origin" class="form-control" /></td>' +
+                '<td><input type="text" id="Txt_Shipping" name="Txt_Shipping" class="form-control" /></td>' +
+                '<td><input type="text" id="Txt_Vat1" name="Txt_Vat1" class="form-control" /></td>' +
+                '<td><input type="text" id="Txt_BTax3" name="Txt_BTax3" class="form-control" /></td>' +
+                '<td><input type="text" id="Txt_Btax1" name="Txt_Btax1" class="form-control" /></td>' +
+               ' <td><input type="text" id="Txt_Vat2" name="Txt_Vat2" class="form-control" /></td>'+
+                '<td><input type="text" id="Txt_Advance" name="Txt_Advance" class="form-control" /></td>' +
+                '<td><input type="text" id="Txt_Apamount" name="Txt_Apamount" class="form-control" onkeypress="return InsertRowEnter(event)" /></td>' +
+            '</tr >';
+            /*table.appendChild(content);*/
+            /*table.row.add(content).draw(false);*/
+            $('#Table_dataFeight tr:last').after(content);
+
+        }
+
+    }
+    function getValueDdl() {
+        $.ajax({
+            type: 'POST',
+            url: 'GetValue_DropdowList',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'Json',
+            success: function(data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        })
+    }
+</script>

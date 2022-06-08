@@ -15,33 +15,14 @@
 </head>
 <body>
     
-    <table class="table table-bordered" id="Table_dataFeight">
-    <thead>
-        <tr>
-            <th scope="col">Test x</th>
-            <th scope="col">Test xxx</th>
-            <th scope="col">Test xxx</th>
-            <th scope="col">Test xxx</th>
-            <th scope="col">Test xxx</th>
-            <th scope="col">Test xxx</th>
-            <th scope="col">Test xxx</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th><select class="form-control"><option> -- selected --</option></select></th>
-            <td><input type="text" class="form-control" /></td>
-            <td><input type="text" class="form-control" /></td>
-            <td><input type="text" class="form-control" /></td>
-            <td><input type="text" class="form-control" /></td>
-            <td><input type="text" class="form-control" /></td>
-            <td><input type="text" class="form-control" onkeypress="return InsertRowEnter(event)"/></td>
-
-        </tr>
-    </tbody>
-</table>
+   
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            window.location = '/Manage_Freight/Login'
+
+        });
+
         function InsertRowEnter(e) {
             if (e.keyCode == "13") {
               /*  alert("test");*/
