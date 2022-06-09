@@ -314,9 +314,9 @@
             <!-- Login Form -->
             <form class="login100-form" asp-action="Login" method="post" asp-route-returnUrl="@ViewData["ReturnUrl"]" asp-antiforgery="false">
 
-                <input type="text" id="OPID" class="form-control" name="OPID" placeholder="Operator"><br />
+                <input type="text" id="OPID" class="form-control" name="OPID" placeholder="Operator" onkeypress="return EnterSubmit(event)"><br />
 
-                <input type="password" id="OPpassword" class="form-control" name="OPpassword" placeholder="Password"> <br />
+                <input type="password" id="OPpassword" class="form-control" name="OPpassword" placeholder="Password" onkeypress="return EnterSubmit(event)"> <br />
                 @*<input type="submit" class="fadeIn fourth" value="Log In">*@
                 <br />
                 <div><button type="button" id="btnLogin" name="btnLogin" class="btn btn-outline-dark" style="color: #fff; background-color: #343a40; border-color: #343a40;">Login</button></div>
@@ -331,13 +331,23 @@
     </div>
 
     <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+        function EnterSubmit(e) {
+            if (e.keyCode == "13") {
+                query_login();
+            }
+            
+        }
 
         $("#btnLogin").click(function (e) {
-            /*function CheckLogin() {*/
+          
+            query_login();
+           
+        });
 
-
-
-                @*url: '@Url.Action("CheckUserLogin", "HomeController")',*@
+        function query_login() {
 
             var operation_id = $("#OPID").val();
             var operation_Password = $("#OPpassword").val();
@@ -376,7 +386,7 @@
                     }
                 });
             }
-        });
+        }
     </script>
 </body>
 
