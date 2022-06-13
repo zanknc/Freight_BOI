@@ -47,8 +47,17 @@ namespace Import_Freight_BOI.Controllers
         }
 
 
-        
 
+        public IActionResult Logout()
+        {
+            var session = HttpContext.Session.GetString("SessionID");
+            if (session != "")
+            {
+                HttpContext.Session.Remove("SessionID");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
 
       
     }

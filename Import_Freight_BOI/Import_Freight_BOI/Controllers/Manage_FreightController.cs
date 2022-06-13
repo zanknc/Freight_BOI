@@ -35,6 +35,8 @@ namespace Import_Freight_BOI.Controllers
             var ObjRun = new mgrSQLConnect(_configuration);
             DataTable dt = new DataTable();
 
+            Strsql = "SELECT AccountNo ,Title FROM AccountTitle";
+            ViewBag.AccountTitle = ObjRun.GetDatatables(Strsql);
 
             Strsql = "Select * FROM vewCountry";
             ViewBag.Country = ObjRun.GetDatatables(Strsql);
@@ -56,6 +58,8 @@ namespace Import_Freight_BOI.Controllers
             ViewBag.Transportation = ObjRun.GetDatatables(Strsql);
             string Session = HttpContext.Session.GetString(SessionID);
             ViewBag.SessionID = Session;
+
+            
 
             if (Session == null)
             {
@@ -90,6 +94,8 @@ namespace Import_Freight_BOI.Controllers
                         worksheet.Cell(1, 1).Value = "Export Frieght "+ '"' + "sort by Section"+'"' + "";
                         worksheet.Cell(1, 2).Value = "TYPE";
                         worksheet.Cell(1, 3).Value = "LastName";
+                        worksheet.Cell(1, 1).Style.Font.FontSize = 20;
+                        worksheet.Cell(1, 1).Style.Font.SetBold();
 
 
 
@@ -101,6 +107,10 @@ namespace Import_Freight_BOI.Controllers
                             return File(content, contentType, fileName);
                         }
                     }
+
+
+
+
                 }
                 catch (Exception ex)
                 {
@@ -310,38 +320,52 @@ namespace Import_Freight_BOI.Controllers
         //    
         //    return Json("");
         //}
+        public JsonResult getDropdownTitle(string Data)
+        {
+            var Sqlquery = new mgrSQLConnect(_configuration);
 
+            DataTable dt = new DataTable();
+           string Strsql = "SELECT AccountNo ,Title FROM AccountTitle";
+            dt = Sqlquery.GetDatatables(Strsql);
+            return Json(dt);
+        }
 
-        public JsonResult Insert_Freight_detail(string title, string terminal, string License, string Freight, string Origin, string Shipping, string Vat1, string Btax3, string Btax1, string Vat2, string Advance, string APamount)
+        public JsonResult Insert_Freight_detail(String[] RowData)
         {
 
-           
+            string status, lastID;
             var Sqlquery = new mgrSQLConnect(_configuration);
             DataTable dt = new DataTable();
-            string status;
-            string lastID;
+            
+
             try
             {
+                
 
-                //string Sqlstr = "Exec sprOperation_InvoiceImportHeader '" + DN + "','" + YearMonth + "','" + Forwarder + "','" + Invoice + "','" + RentDay + "','" + Transport + "','" + Delivery + "','" + Supplier + "','" + Vm + "','" + ETA + "','" + Storage + "','" + Country + "','" + Vat + "','" + Session + "'";
-                //var ExcuteProc = Sqlquery.ExcuteProc(Sqlstr);
+                for (int i =0; i< RowData.Length; i++)
+                {
+                    dt = Sqlquery.GetDatatables("select Max(DNID) from ImportFreightHead");
+                    lastID = dt.Rows[0][0].ToString().Trim();
+                    string addchar = "'" + lastID + "','" + RowData[i].Replace(",", "','");
+                    string Sqlstr = "Exec sprOperation_FreightImportDetail " + addchar + "'";
+                    var ExcuteProc = Sqlquery.ExcuteProc(Sqlstr);
 
-                //dt = Sqlquery.GetDatatables("select Max(DNID) from ImportFreightHead");
-                //lastID = dt.Rows[0][0].ToString();
 
-                //status = "True";
+                }
+                status = "True";
+            
 
             }
             catch (Exception ex)
             {
-                throw ex;
-
                 status = "False";
             }
 
-            var JsonResult = Json(new { status = "", lastID = "" });
+            var JsonResult = Json(new { status = status });
             return JsonResult;
         }
 
     }
+
+   
 }
