@@ -220,9 +220,9 @@
         };
 
     function ClearContentBody() {
-        var tatbles = document.getElementById("Table_dataFeight");
-        tatbles.clear()
-
+      
+        $('#Table_dataFeight').find('input[type="text"]').val("");
+        $('#txt_title0').val("0");
     }
         function ClearContent() {
             ClearContentBody();
@@ -233,7 +233,7 @@
             $("#Ddl_date").val(day);
             $("#Ddl_Forwardd").val(0);
             $("#Txt_Invoice").val('');
-            $("#Txt_RentDay").val(day);
+            $("#Txt_RentDay").val(day); 
             $("#Txt_Vat").val('');
             $("#Ddl_Transport").val(0);
             $("#Ddl_Delivery").val(0);
@@ -457,7 +457,7 @@
                     url: 'getDropdownTitle',
                     dataType: 'json',
                     success: function (data) {
-                      
+                        console.log(data);
                           var contentTitle = '<option value="0">-- select title --</option>';
                         for (i = 0; i < data.length; i++) {
                             
