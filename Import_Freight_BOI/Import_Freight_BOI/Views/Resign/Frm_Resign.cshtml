@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewData["Title"] = "Employee Resign";
+    //Layout = "~/Layout/_Menu.cshtml";
+}
+
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+
+        upload file Employee
+        @*<input type="file" name="file_Emp" id="file_emp" />*@
+     
+        @*<br />*@
+        <p>
+            @*@Html.TextBox("file_emp", "", new { type = "file" })*@
+            <input type="file" id="FileUpload1" multiple />
+            <span><button type="button" name="btn_upload" id="btn_upload" class="btn btn-success">UPLOAD</button></span>
+        </p>
+
+    </form>
+    <script>
+            var fileContent;
+
+            $(document).ready(function () {
+
+            })
+            var paths = "";
+
+        /* $("#FileUpload1").on("change", function () {*/
+
+        $("#Test").on("change", function () {
+
+                //var fileUpload = $("#FileUpload1").get(0);
+                //var files = fileUpload.files;
+                //var fileData = new FormData();
+                //for (var i = 0; i < files.length; i++) {
+                //    fileData.append(files[i].name, files[i]);
+                //}
+                //console.log(fileData);
+                var file = document.getElementById("FileUpload1")
+                var formData = new FormData();
+                var filess = file.files[0];
+                formData.append('File', filess);
+
+                $.ajax({
+                    url: 'GetfileExcel',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function(data) {
+                        console.log(data);
+                        window.location = data;
+                    }
+                });
+
+                //var formData = new FormData(); //file_Emp
+
+                ///*    var files = $("#file_Emp").get(0).files[0];*/
+                ////var file = document.getElementById("file_Emp").files[0];
+                ////formData.append("MyFile", file);
+
+                //formData.append("file_Emp", $("#file_Emp").prop('files'));
+
+
+                //$.ajax({
+                //    url: 'Get_data_file_Excel',
+                //    type: 'POST',
+                //    contentType: 'multipart/form-data',
+                //    dataType: 'Json',
+                //    data: formData,
+                //    processData: false,
+                //    contentType: false,
+                //    success: function (data) {
+                //        console.log(data);
+                //    }
+
+                //})
+
+
+            });
+
+            $("#btn_upload").on("click", function () {
+                var file = document.getElementById("FileUpload1")
+                var formData = new FormData();
+                var filess = file.files[0];
+                formData.append('File', filess);
+
+                $.ajax({
+                    url: '@Url.Action("GetfileExcel")',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+
+            });
+    </script>
+</body>
+</html>
+
