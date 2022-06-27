@@ -285,3 +285,11 @@ E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debu
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\ref\Import_Freight_BOI.dll
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Import_Freight_BOI.pdb
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Import_Freight_BOI.genruntimeconfig.cache
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\Google.Protobuf.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\K4os.Compression.LZ4.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\K4os.Compression.LZ4.Streams.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\K4os.Hash.xxHash.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\MySql.Data.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\Ubiety.Dns.Core.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\ZstdNet.dll

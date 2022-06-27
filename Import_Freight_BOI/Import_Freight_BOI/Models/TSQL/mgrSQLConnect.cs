@@ -25,6 +25,7 @@ namespace Import_Freight_BOI.Models.TSQL
         public DataTable GetDatatables(string Sql)
         {
             var constr = configuration.GetConnectionString("CONN");
+            var conGFDReport = configuration.GetConnectionString("Con_GFDReport");
             var dt = new DataTable();
 
 

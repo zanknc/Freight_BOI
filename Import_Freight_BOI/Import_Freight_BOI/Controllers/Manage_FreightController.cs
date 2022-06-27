@@ -14,6 +14,9 @@ using OfficeOpenXml;
 using ClosedXML.Excel;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using System.Net;
+using System.Net.Http;
+using MySql.Data.MySqlClient.Memcached;
 
 namespace Import_Freight_BOI.Controllers
 {
@@ -60,7 +63,7 @@ namespace Import_Freight_BOI.Controllers
             ViewBag.SessionID = Session;
 
             
-
+           
             if (Session == null)
             {
                 return RedirectToAction("Index","Home");
@@ -71,6 +74,19 @@ namespace Import_Freight_BOI.Controllers
             }
            
         }
+
+        private string CheckGFDReport(int OPID)
+        {
+         
+            string status = "";
+            using (var httpClient = new HttpClient())
+            {
+                string url1 = "";
+               
+            }
+            return "";
+        }
+
         public IActionResult Report_Section()
         {
             string Session = HttpContext.Session.GetString(SessionID);
