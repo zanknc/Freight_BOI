@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "bGOEIOH0o22EAgLgR36PxAgRMQFOoJ/H6oJVFGSkUely9XdKxqarjE4QazDO8FfLnP4CYAW2c72JUcSVmzSLhg==",
+  "dgSpecHash": "WUDQx4OzNL+IiktWtKN1NY5ESrPKrLeeKn9cE1jPuA1i3ay2ONF080UT0W3jVZc1oHp/zYgAN5q7th0phHncaQ==",
   "success": true,
   "projectFilePath": "E:\\Github\\Freight_BOI\\Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI\\Import_Freight_BOI.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,8 @@
     "C:\\Users\\010724\\.nuget\\packages\\k4os.compression.lz4\\1.2.6\\k4os.compression.lz4.1.2.6.nupkg.sha512",
     "C:\\Users\\010724\\.nuget\\packages\\k4os.compression.lz4.streams\\1.2.6\\k4os.compression.lz4.streams.1.2.6.nupkg.sha512",
     "C:\\Users\\010724\\.nuget\\packages\\k4os.hash.xxhash\\1.0.6\\k4os.hash.xxhash.1.0.6.nupkg.sha512",
+    "C:\\Users\\010724\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.9\\microsoft.aspnet.webapi.client.5.2.9.nupkg.sha512",
+    "C:\\Users\\010724\\.nuget\\packages\\microsoft.aspnet.webapi.core\\5.2.9\\microsoft.aspnet.webapi.core.5.2.9.nupkg.sha512",
     "C:\\Users\\010724\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\010724\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.0.3\\microsoft.aspnetcore.jsonpatch.3.0.3.nupkg.sha512",
     "C:\\Users\\010724\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.0.3\\microsoft.aspnetcore.mvc.newtonsoftjson.3.0.3.nupkg.sha512",
@@ -157,6 +159,16 @@
     "C:\\Users\\010724\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.AspNet.WebApi.Core 5.2.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.AspNet.WebApi.Core",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

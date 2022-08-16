@@ -5,15 +5,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\..\..\..\Source Program\IS\CoolAdmin-master\vendor\bootstrap-4.1\bootstrap.min.css" Link="wwwroot\vendor\bootstrap-4.1\bootstrap.min.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!--<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />-->
     <PackageReference Include="ClosedXML" Version="0.95.4" />
     <PackageReference Include="EPPlus" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.3" />
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="14.0.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="MySql.Data" Version="8.0.29" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\vendor\bootstrap-4.1\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\..\Source Program\IS\CoolAdmin-master\vendor\bootstrap-4.1\bootstrap.min.js" Link="wwwroot\vendor\bootstrap-4.1\bootstrap.min.js" />
+    <None Include="..\..\..\..\..\Source Program\IS\CoolAdmin-master\vendor\bootstrap-4.1\popper.min.js" Link="wwwroot\vendor\bootstrap-4.1\popper.min.js" />
   </ItemGroup>
 
 </Project>

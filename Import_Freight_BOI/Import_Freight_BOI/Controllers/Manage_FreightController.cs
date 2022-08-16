@@ -23,6 +23,7 @@ namespace Import_Freight_BOI.Controllers
     public class Manage_FreightController : Controller
     {
         public const string SessionID = "";
+        public const string Session_fullname = "";
         private readonly IConfiguration _configuration;
         public Manage_FreightController(IConfiguration configuration)
         {
@@ -59,6 +60,7 @@ namespace Import_Freight_BOI.Controllers
 
             Strsql = "Select * FROM vewTransportation";
             ViewBag.Transportation = ObjRun.GetDatatables(Strsql);
+
             string Session = HttpContext.Session.GetString(SessionID);
             ViewBag.SessionID = Session;
 
@@ -141,7 +143,7 @@ namespace Import_Freight_BOI.Controllers
 
         public IActionResult Login()
         {
-
+      
             return View();
         }
         public IActionResult Export_data()
@@ -290,6 +292,7 @@ namespace Import_Freight_BOI.Controllers
             if (checkUser.Rows.Count != 0)
             {
                 HttpContext.Session.SetString(SessionID, checkUser.Rows[0][0].ToString());
+                HttpContext.Session.SetString(Session_fullname, checkUser.Rows[0][1].ToString());
                 status = "True";
                 //return RedirectToPage(nameof(HomeController.Index), "Home");
             }

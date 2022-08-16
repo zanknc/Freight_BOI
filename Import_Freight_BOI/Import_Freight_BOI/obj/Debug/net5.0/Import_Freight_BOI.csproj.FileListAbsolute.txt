@@ -247,7 +247,6 @@ E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debu
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.AccessControl.dll
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.1\System.Windows.Extensions.dll
-E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Import_Freight_BOI.csproj.AssemblyReference.cache
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Import_Freight_BOI.GeneratedMSBuildEditorConfig.editorconfig
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Import_Freight_BOI.AssemblyInfoInputs.cache
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Import_Freight_BOI.AssemblyInfo.cs
@@ -293,3 +292,8 @@ E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debu
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\MySql.Data.dll
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\Ubiety.Dns.Core.dll
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\ZstdNet.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\System.Net.Http.Formatting.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\System.Web.Http.dll
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Razor\Views\Resign\FrmTest.cshtml.g.cs
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Razor\Layout\_MainMenu.cshtml.g.cs
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Import_Freight_BOI.csproj.AssemblyReference.cache

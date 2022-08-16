@@ -1,91 +1,307 @@
 ﻿
 @{
     ViewData["Title"] = "Employee Resign";
-    //Layout = "~/Layout/_Menu.cshtml";
+    Layout = "~/Layout/_MainMenu.cshtml";
+    ViewData["SessionID"] = ViewBag.SessionID;
 }
 
-<html>
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
 
-</head>
-<body>
+    div.dataTables_wrapper {
+        width: 800px;
+        margin: 0 auto;
+    }
+</style>
     <form method="post" enctype="multipart/form-data">
 
-        upload file Employee
-        @*<input type="file" name="file_Emp" id="file_emp" />*@
-     
-        @*<br />*@
-        <p>
-            @*@Html.TextBox("file_emp", "", new { type = "file" })*@
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="mr-2 fa fa-align-justify"></i>
+                            <strong class="card-title" v-if="headerText">Resign System</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-10">  <input type="file" id="FileUpload1" multiple class="form-control" /></div>
+                                <div class="col-md-2">   <button type="button" style="background: #4272d7; border: solid 1px #4272d7; " name="btn_upload" id="btn_upload" class="btn btn-success">UPLOAD</button>   <button type="button" name="btn_DownloadTemplate" id="btn_DownloadTemplate" class="btn btn-info">TEMPLATE</button></div>
+                            </div>
+
+
+
+                        </div>
+
+                 
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="mr-2 fa fa-align-justify"></i>
+                            <strong class="card-title" v-if="headerText">Charts System</strong>
+                        </div>
+
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="title-2 m-b-40">Doughut Chart</h3>
+                                    <canvas id="doughutChart"></canvas>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="mr-2 fa fa-align-justify"></i>
+                                <strong class="card-title" v-if="headerText">Resign System</strong>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="col-md-2">Resign Date :   </div>
+                                    <div class="col-md-4">   <select id="" class="form-control"><option value="">07/2022</option></select></div>
+                                    <div class="col-md-4">   <button type="button" style="background: #4272d7; border: solid 1px #4272d7; " name="btn_Download" id="btn_Download" class="btn btn-success">Download Report</button> </div>
+
+                                    <div class="col-md-2">  </div>
+
+
+
+
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+                    </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+
+                        <div class="card-header">
+                            <i class="mr-2 fa fa-align-justify"></i>
+                            <strong class="card-title" v-if="headerText">Resign System</strong>
+                        </div>
+
+                        <div class="card-body" style="padding:50px;">
+                            <div class="row">
+
+                                <table id="datatables" class="table table-striped table-bordered"  style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>NO</th>
+                                            <th>OPID</th>
+                                            <th>Name</th>
+                                            <th>SurName</th>
+                                            <th>Position</th>
+                                            <th>Level</th>
+                                            <th>Sect.</th>
+                                            <th>Dept.</th>
+                                            <th>Hq.</th>
+                                            <th>ResignDate</th>
+                                            <th>ResignDateMaking</th>
+                                            <th>OPIDMaking</th>
+
+                                          
+                                        </tr>
+                                    </thead>
+                                 
+                                  
+                                </table>
+
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            @*<div class="row">
+               
+                <div class="col-md-12">
+                    <div class="card">
+
+                        <div class="card-header">
+                            <i class="mr-2 fa fa-align-justify"></i>
+                            <strong class="card-title" v-if="headerText">Resign System</strong>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-2">Resign Date :   </div>
+                                <div class="col-md-4">   <select id="" class="form-control"><option value="">07/2022</option></select></div>
+                                <div class="col-md-4">   <button type="button" style="background: #4272d7; border: solid 1px #4272d7; " name="btn_Download" id="btn_Download" class="btn btn-success">Download Report</button> </div>
+
+                                <div class="col-md-2">  </div>
+
+
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>*@
+            @*<p>
+
             <input type="file" id="FileUpload1" multiple />
             <span><button type="button" name="btn_upload" id="btn_upload" class="btn btn-success">UPLOAD</button></span>
-        </p>
-
+        </p>*@
+        </div>
     </form>
     <script>
-            var fileContent;
+           
+        $(document).ready(function () {
 
-            $(document).ready(function () {
-
+            $.ajax({
+                url: "GetOperetorResign",
+                method: "POST",
+                dataType: "Json",
+                success: function (data) {
+                    $("#datatables").DataTable({
+                        data: data,
+                        columns: [
+                    { data: "no" },
+                    { data: "opid" },
+                    { data: "OPName" },
+                    { data: "opSurName" },
+                    { data: "opPosition" },
+                    { data: "opLevel" },
+                    { data: "opSect" },
+                    { data: "opDept" },
+                    { data: "opDiv" },
+                    { data: "opHq" },
+                    { data: "resignDate" },
+                    { data: "resignDateMaking" },
+                    { data: "opidMaking" }
+                ]
+                    })
+                }
             })
-            var paths = "";
+            //$('#datatables').DataTable({
+            //    scrollX: true,
+            //  //ajax: "GetOperetorResign"
+                
+            //  //  ,
+            //    bLengthChange: true,
+            //   /* lengthMenu: [[5, 10, -1], [5, 10, "All"]],*/
+            //    bFilter: true,
+            //    bSort: true,
+            //    bPaginate: true,
+            //    ajax: "GetOperetorResign",
+            //    dataSrc: '',
+            //    columns: [
+            //        { data: "no" },
+            //        { data: "opid" },
+            //        { data: "OPName" },
+            //        { data: "opSurName" },
+            //        { data: "opPosition" },
+            //        { data: "opLevel" },
+            //        { data: "opSect" },
+            //        { data: "opDept" },
+            //        { data: "opDiv" },
+            //        { data: "opHq" },
+            //        { data: "resignDate" },
+            //        { data: "resignDateMaking" },
+            //        { data: "opidMaking" }
+            //    ]
 
-        /* $("#FileUpload1").on("change", function () {*/
+            //    //ajax: {
+            //    //    url: "GetOperetorResign",
+            //    //    dataSrc: 'data'
+            //    //},
+            //    //columns: [
+            //    // { data: "no" },
+            //    //{ data: "opid" },
+            //    //{ data: "opName" },
+            //    //{ data: "OPSurName" },
+            //    //{ data: "OPPosition" },
+            //    //{ data: "OPLevel" },
+            //    //{ data: "OPSect" },
+            //    //{ data: "OPDept" },
+            //    //{ data: "OPHq" },
+            //    //{ data: "ResignDate" },
+            //    //{ data: "ResignDateMaking" },
+            //    //{ data: "OPIDMaking" }
+            //    // ]
+            //});
 
-        $("#Test").on("change", function () {
-
-                //var fileUpload = $("#FileUpload1").get(0);
-                //var files = fileUpload.files;
-                //var fileData = new FormData();
-                //for (var i = 0; i < files.length; i++) {
-                //    fileData.append(files[i].name, files[i]);
-                //}
-                //console.log(fileData);
-                var file = document.getElementById("FileUpload1")
-                var formData = new FormData();
-                var filess = file.files[0];
-                formData.append('File', filess);
-
-                $.ajax({
-                    url: 'GetfileExcel',
-                    type: "POST",
-                    contentType: false,
-                    processData: false,
-                    data: formData,
-                    success: function(data) {
-                        console.log(data);
-                        window.location = data;
-                    }
-                });
-
-                //var formData = new FormData(); //file_Emp
-
-                ///*    var files = $("#file_Emp").get(0).files[0];*/
-                ////var file = document.getElementById("file_Emp").files[0];
-                ////formData.append("MyFile", file);
-
-                //formData.append("file_Emp", $("#file_Emp").prop('files'));
-
-
-                //$.ajax({
-                //    url: 'Get_data_file_Excel',
-                //    type: 'POST',
-                //    contentType: 'multipart/form-data',
-                //    dataType: 'Json',
-                //    data: formData,
-                //    processData: false,
-                //    contentType: false,
-                //    success: function (data) {
-                //        console.log(data);
-                //    }
-
-                //})
+            //ajax: {
+            //    url: 'https://localhost:44317/api/GetOperatorsResign',
+            //    method: "GET",
+            //    xhrFields: {
+            //        withCredentials: true
+            //    }
+            //},
+            //columns: [
+            //    { data: "NO" },
+            //    { data: "OPID" },
+            //    { data: "OPName" },
+            //    { data: "OPSurName" },
+            //    { data: "OPPosition" },
+            //    { data: "OPLevel" },
+            //    { data: "OPSect" },
+            //    { data: "OPDept" },
+            //    { data: "OPHq" },
+            //    { data: "ResignDate" },
+            //    { data: "ResignDateMaking" },
+            //    { data: "OPIDMaking" }
+            //]
 
 
-            });
+            /*window.location.href = 'C:\Users\010724\Desktop\Resignation_ 202207.xlsx';*/
+        });
+
+                                            //<th>NO</th>
+                                            //<th>OPID</th>
+                                            //<th>OPName</th>
+                                            //<th>OPSurName</th>
+                                            //<th>OPPosition</th>
+                                            //<th>OPLevel</th>
+                                            //<th>OPSect</th>
+                                            //<th>OPDept</th>
+                                            //<th>OPDiv</th>
+                                            //<th>OPHq</th>
+                                            //<th>ResignDate</th>
+                                            //<th>ResignDateMaking</th>
+                                            //<th>OPIDMaking</th>
+
+          
+
+
+
+       
+        $("#btn_DownloadTemplate").on("click", function () {
+            window.location.href = 'C:\Users\010724\Desktop\Resignation_ 202207.xlsx';
+        });
+
 
             $("#btn_upload").on("click", function () {
                 var file = document.getElementById("FileUpload1")
@@ -101,11 +317,12 @@
                     data: formData,
                     success: function (data) {
                         console.log(data);
+                        window.location.href = data;
                     }
                 });
 
             });
+
+
     </script>
-</body>
-</html>
 

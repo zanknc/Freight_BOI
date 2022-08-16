@@ -21,11 +21,11 @@ namespace Import_Freight_BOI.Models.TSQL
         {
             this.configuration = configuration;
         }
-
+        
         public DataTable GetDatatables(string Sql)
         {
             var constr = configuration.GetConnectionString("CONN");
-            var conGFDReport = configuration.GetConnectionString("Con_GFDReport");
+            //var conGFDReport = configuration.GetConnectionString("Con_GFDReport");
             var dt = new DataTable();
 
 
@@ -55,6 +55,372 @@ namespace Import_Freight_BOI.Models.TSQL
             }
         }
 
+        public string Get_RTHSRVM03(string Sql)
+        {
+            //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";
+            var Con_RTHSRVM03 = configuration.GetConnectionString("Con_RTHSRVM03");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(Con_RTHSRVM03))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        if(dt.Rows.Count >= 1)
+                        {
+                            return "true";
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+                        
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e.ToString();
+                return dsa;
+            }
+        }
+
+
+        public string Get_Con_RTHSRVMCR01(string Sql)
+        {
+            //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";
+            var Con_RTHSRVMCR01 = configuration.GetConnectionString("Con_RTHSRVMCR01");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(Con_RTHSRVMCR01))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        if (dt.Rows.Count >= 1)
+                        {
+                            return "true";
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e.ToString();
+                return dsa;
+            }
+        }
+        
+             public string Get_RTHSRVOPM02(string Sql)
+        {
+            //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";
+            var Con_RTHSRVOPM02 = configuration.GetConnectionString("Con_RTHSRVOPM02");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(Con_RTHSRVOPM02))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        if (dt.Rows.Count >= 1)
+                        {
+                            return "true";
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e.ToString();
+                return dsa;
+            }
+        }
+        public string Get_RTHSRVOPM01(string Sql)
+        {
+            //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";
+            var Con_RTHSRVOPM01 = configuration.GetConnectionString("Con_RTHSRVOPM01");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(Con_RTHSRVOPM01))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        if (dt.Rows.Count >= 1)
+                        {
+                            return "true";
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e.ToString();
+                return dsa;
+            }
+        }
+          public string Get_RTHSRV07(string Sql)
+        {
+            //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";
+            var Con_RTHSRV07 = configuration.GetConnectionString("Con_RTHSRV07");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(Con_RTHSRV07))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        if (dt.Rows.Count >= 1)
+                        {
+                            return "true";
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e.ToString();
+                return dsa;
+            }
+        }
+        public string Get_RTHSRV11(string Sql)
+        {
+            //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";
+            var Con_RTHSRV11 = configuration.GetConnectionString("Con_RTHSRV11");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(Con_RTHSRV11))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        if (dt.Rows.Count >= 1)
+                        {
+                            return "true";
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e.ToString();
+                return dsa;
+            }
+        }
+
+        public string Get_RTHSRV04(string Sql)
+        {
+            //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";
+            var Con_RTHSRV04 = configuration.GetConnectionString("Con_RTHSRV04");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(Con_RTHSRV04))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        if (dt.Rows.Count >= 1)
+                        {
+                            return "true";
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e.ToString();
+                return dsa;
+            }
+        }
+        
+            public string Get_RTHSRVWSlip(string Sql)
+        {
+            //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";
+            var Con_RTHSRVWSlip = configuration.GetConnectionString("Con_RTHSRVWSlip");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(Con_RTHSRVWSlip))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        if (dt.Rows.Count >= 1)
+                        {
+                            return "true";
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e.ToString();
+                return dsa;
+            }
+        }
+        public string Get_RTHSRVTR01(string Sql)
+        {
+            //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";
+            var Con_RTHSRVTR01 = configuration.GetConnectionString("Con_RTHSRVTR01");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(Con_RTHSRVTR01))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        if (dt.Rows.Count >= 1)
+                        {
+                            return "true";
+                        }
+                        else
+                        {
+                            return "false";
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e.ToString();
+                return dsa;
+            }
+        }
+        
         public DataTable GetDataTableCmd(SqlCommand objCmd)
         {
             DataTable objDataTbl;
@@ -133,7 +499,7 @@ namespace Import_Freight_BOI.Models.TSQL
         }
 
 
-        public int ExcuteProc(String Str)
+        public int ExcuteProc(string Str)
         {
             int excproc = 0;
 
@@ -164,6 +530,40 @@ namespace Import_Freight_BOI.Models.TSQL
            
         }
 
+
+        public string ExcuteStore(string Str)
+        {
+            var dt = new DataTable();
+            string excproc = "";
+
+            try
+            {
+
+                var conn = configuration.GetConnectionString("CONN");
+
+                using (var con = new SqlConnection(conn))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(Str, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        excproc = dt.Rows[0][0].ToString();
+
+                    }
+                }
+
+                return excproc;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
 
 
 

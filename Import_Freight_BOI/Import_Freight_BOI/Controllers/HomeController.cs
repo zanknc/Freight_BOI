@@ -16,9 +16,10 @@ namespace Import_Freight_BOI.Controllers
     {
         private readonly IConfiguration _configuration;
         public const string SessionID = "";
+        public const string Session_fullname = "";
         //protected SqlConnection conn = new SqlConnection("Data source=;Initail Catalog=;user ID; password;");
         //private readonly ILogger<HomeController> _logger;
-      
+
         public HomeController(IConfiguration configuration)
         {
 
@@ -51,9 +52,11 @@ namespace Import_Freight_BOI.Controllers
         public IActionResult Logout()
         {
             var session = HttpContext.Session.GetString("SessionID");
+            var session_fullname = HttpContext.Session.GetString("Session_fullname");
             if (session != "")
             {
                 HttpContext.Session.Remove("SessionID");
+                HttpContext.Session.Remove("session_fullname");
             }
 
             return RedirectToAction("Index", "Home");
