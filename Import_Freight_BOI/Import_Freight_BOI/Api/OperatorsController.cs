@@ -380,6 +380,30 @@ namespace Import_Freight_BOI.Api
         
         }
 
+
+
+        [Route("api/GetOperatorResignChart")]
+        public DataTable GetOperatorResignChart()
+        {
+          
+            string Strsql = "select * from vewOperatorResignChart";
+            var ObjRun = new mgrSQLConnect(_configuration);
+            DataTable response = new DataTable();
+            response =  ObjRun.GetDatatables(Strsql);
+            return response;
+        }
+
+
+        [Route("api/GetGroupOperatorResign")]
+        public DataTable GetGroupOperatorResign()
+        {
+            string Strsql = "select * from vewGroupHqResign";
+            var ObjRun = new mgrSQLConnect(_configuration);
+            DataTable response = new DataTable();
+            response = ObjRun.GetDatatables(Strsql);
+            return response;
+        }
+
     }
 
 }

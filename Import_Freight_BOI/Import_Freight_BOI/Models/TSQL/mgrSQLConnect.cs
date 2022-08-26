@@ -25,6 +25,7 @@ namespace Import_Freight_BOI.Models.TSQL
         public DataTable GetDatatables(string Sql)
         {
             var constr = configuration.GetConnectionString("CONN");
+            string consString = "Data Source=RTHSRV14;Initial Catalog=ImportExportDB;Persist Security Info=True;User ID=sa;Password=pwpolicy;";
             //var conGFDReport = configuration.GetConnectionString("Con_GFDReport");
             var dt = new DataTable();
 
@@ -34,7 +35,7 @@ namespace Import_Freight_BOI.Models.TSQL
                 var query = Sql;
 
                 var ds = new DataSet();
-                using (var con = new SqlConnection(constr))
+                using (var con = new SqlConnection(consString))
                 {
                     using (var cmd = new SqlCommand())
                     {

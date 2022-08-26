@@ -36,27 +36,33 @@
 
     <!-- Fontfaces CSS-->
 
-
+    <script src="~/lib/jquery/jquery.slim.min.js"></script>
     <link href="~/css/font-face.css" rel="stylesheet" media="all">
     <link href="~/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="~/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
     <link href="~/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" defer></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="~/npm/sweetalert2@11.js"></script>
+    @*<script src="~/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>*@
+    <script type="text/javascript" charset="utf8" src="~/1.12.1/js/dataTables.bootstrap5.min.js" defer></script>
+    <script type="text/javascript" charset="utf8" src="~/1.12.1/js/jquery.dataTables.min.js" defer></script>
+    <script src="~/npm/popper.js@1.12.9/dist/popper.min.js" crossorigin="anonymous"></script>
+    @*<script src="~/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="~/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" crossorigin="anonymous">*@
+    @*<script src="~/lib/DataTables/js/jquery.dataTables.js"></script>*@
 
 
-    <script src="https://your-site-or-cdn.com/fontawesome/v6.1.1/js/all.js"></script>
+
+    <script src="~/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    @*<script src="~/fontawesome/v6.1.1/js/all.js"></script>*@
 
     @*<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js" defer></script>*@
 
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" />
+    @*<link rel="stylesheet" type="text/css" href="~/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />*@
+    <link rel="stylesheet" type="text/css" href="~/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/ajax/libs/twitter-bootstrap/5.1.3/css/dataTables.bootstrap5.min.css" />
+    @*<link rel="stylesheet" type="text/css" href="~/1.12.1/css/dataTables.bootstrap4.min.css" />*@
     @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />*@
     <!-- Vendor CSS-->
 
@@ -299,7 +305,7 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." disabled="disabled"/>
                                 <button class="au-btn--submit" type="submit">
                                     <i class="zmdi zmdi-search"></i>
                                 </button>
@@ -329,12 +335,12 @@
                                                     <span class="email">@ViewBag.Session_fullname</span>
                                                 </div>
                                             </div>
-                                            <div class="account-dropdown__body">
+                                            <div class="account-dropdown__body" style="text-align: center;">
                                                 <a href="/Home/Logout">
                                                     <i class="zmdi zmdi-power" href="/Home/Logout"></i>Logout
                                                 </a>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -348,11 +354,11 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     @RenderBody()
-      
+
                 </div>
             </div>
-     
-          
+
+
 
         </div>
         <!-- END PAGE CONTAINER-->
@@ -379,7 +385,7 @@
     <!-- Main JS-->
     <script src="~/js/main.js"></script>
 
-</body>
+    </body>
 
 </html>
 <!-- end document-->

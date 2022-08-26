@@ -16,10 +16,14 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Configuration;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
+using Import_Freight_BOI.Models.TSQL;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Import_Freight_BOI.Controllers
 {
-
+    
     public class ExcelViewModel
     {
         public string EnrollmentNo { get; set; }
@@ -30,8 +34,15 @@ namespace Import_Freight_BOI.Controllers
 
     public class ResignController : Controller
     {
+        private readonly IConfiguration configuration;
         public const string SessionID = "";
         public const string Session_fullname = "";
+
+      
+        public class ResignDateList
+        {
+                public string ResignDate { get; set; }
+        }
         public IActionResult Index()
         {
             return View();
@@ -44,7 +55,7 @@ namespace Import_Freight_BOI.Controllers
             string Session = HttpContext.Session.GetString(SessionID);
             ViewBag.Session_fullname = fullname;
             ViewBag.SessionID = Session;
-            
+
             return View();
         }
 
@@ -54,7 +65,7 @@ namespace Import_Freight_BOI.Controllers
         public IActionResult GetfileExcel(IFormFile File)
         {
             DataTable dt = new DataTable();
-            var pathFile = "";
+          
             if (File != null)
             {
               
@@ -105,10 +116,7 @@ namespace Import_Freight_BOI.Controllers
                             i++;
 
                         }
-                        //else
-                        //{
-
-                        //}
+                     
 
                     }
 
@@ -121,10 +129,7 @@ namespace Import_Freight_BOI.Controllers
 
                 }
 
-                //if (row.IsEmpty() && row.RowNumber() >= 4)
-                //{
-                //    break;
-                //}
+                
             }
             DataTable DTSqlBulk;
             datatb = new DataTable();
@@ -152,7 +157,7 @@ namespace Import_Freight_BOI.Controllers
                         //Set the database table name
                         sqlBulkCopy.DestinationTableName = "dbo.OperatorsResign";
 
-
+                        sqlBulkCopy.ColumnMappings.Add("NO.", "NO");
                         sqlBulkCopy.ColumnMappings.Add("CODE", "OPID");
                         sqlBulkCopy.ColumnMappings.Add("NAME", "OPName");
                         sqlBulkCopy.ColumnMappings.Add("Column1", "OPSurName");
@@ -173,30 +178,49 @@ namespace Import_Freight_BOI.Controllers
             }
             //var insertLog = InstoServer_fromDT(datatb);
             DTSqlBulk.Columns.Remove(newColumn);
-            //pathFile = Export_To_Excel(datatb,"Excel");
+            //pathFile = Export_To_Excel(datatb,"Excel","");
+            var pathFile = Export_To_Excel(datatb, "");
 
-            pathFile = "C://Users/010724/Desktop/Resignation_ 202207.xlsx";
+            //pathFile = "C://Users/010724/Desktop/Resignation_ 202207.xlsx";
             return Json(pathFile);
         }
 
 
 
-
-
-
-
-        public string Export_To_Excel(DataTable datatb , string filetype)
+        public JsonResult GetExcel_Ddl_resignDate(string resignDate)
         {
+            DataTable dt = new DataTable();
+            var mgrSQLConnect = new mgrSQLConnect(configuration);
+            string query = "select NO, OPID, OPName, OPSurName, OPPosition, OPLevel, OPSect, OPDept, OPDiv, OPHq, ResignDate from[ImportExportDB].[dbo].[OperatorsResign]  where resignDateMaking  = '" + resignDate + "'";
+            dt = mgrSQLConnect.GetDatatables(query);
+            //var pathfile =  Export_To_Excel(dt, "Excel_DdlResignDate", resignDate);
+            var pathfile = Export_To_Excel(dt, resignDate);
+            return Json(pathfile);
+        }
 
 
 
-            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        public JsonResult Export_To_Excel(DataTable datatb , string DateRemake)
+        {
             int lastRow = 0;
-            string month = DateTime.Now.AddMonths(-1).ToString("MMMM");
-            string year = DateTime.Now.ToString("yyyy");
-            string Shortmonth = DateTime.Now.AddMonths(-1).ToString("MM");
-            string fileName = "Resignation_ " + year + Shortmonth + ".xlsx";
+            string contentType , month, year , Shortmonth , fileName;
+            if (DateRemake == "")
+            {
 
+                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                 month = DateTime.Now.AddMonths(-1).ToString("MMMM");
+                 year = DateTime.Now.ToString("yyyy");
+                 Shortmonth = DateTime.Now.AddMonths(-1).ToString("MM");
+                 fileName = "Resignation_ " + year + Shortmonth + ".xlsx";
+            }
+            else
+            {
+                contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                month = Convert.ToDateTime(DateRemake).ToString("MMMM");
+                year = Convert.ToDateTime(DateRemake).ToString("yyyy"); 
+                Shortmonth = Convert.ToDateTime(DateRemake).ToString("MM");
+                fileName = "Resignation_ " + year + Shortmonth + ".xlsx";
+            }
             //string imagePathDomain = Server.MapPath(@"Content\img\DomainHeadPic.png"), imagePathSystem = Server.MapPath(@"Content\img\SystemHeadPic.png");
             string imagePathDomain = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\img\\DomainHeadPic.png", imagePathSystem = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\img\\SystemHeadPic.png";
 
@@ -610,228 +634,231 @@ namespace Import_Freight_BOI.Controllers
                     worksheet4.SheetView.FreezeRows(9);
                     IXLPicture iXLPicture4 = worksheet4.AddPicture(imagePathDomain).MoveTo(worksheet4.Cell("E2")).Scale(1.05);
                     
-                    for (int nrow = 2; nrow < datatb.Rows.Count - 2; nrow++)
+                    for (int nrow = 0; nrow < datatb.Rows.Count; nrow++)
                     {
                         for (int ncol = 1; ncol < datatb.Columns.Count + 1; ncol++)
                         {
                                 if (ncol == 2)
                                 {
-                                    if (filetype != "Template")
-                                    {
-                                        //var OPID = datatb.Rows[nrow - 2][ncol - 1].ToString();
-                                        //string status_TROEM = Check_Operator("TROEM", OPID);
-                                        //if (status_TROEM == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 5).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 5).Style.Font.Bold = true;
-                                        //}
 
-                                        //string statusAlarmDB = Check_Operator("AlarmDB", OPID);
-                                        //if (statusAlarmDB == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 8).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 8).Style.Font.Bold = true;
-                                        //}
+                                var OPID = datatb.Rows[nrow][ncol - 1].ToString();
+                                string status_TROEM = Check_Operator("TROEM", OPID);
+                                if (status_TROEM == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 5).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 5).Style.Font.Bold = true;
+                                }
 
-                                        //string statusNonDb = Check_Operator("NonDb", OPID);
-                                        //if (statusNonDb == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 9).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 9).Style.Font.Bold = true;
-                                        //}
-                                        //string statusPlatingDB = Check_Operator("PlatingDB", OPID);
-                                        //if (statusPlatingDB == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 11).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 11).Style.Font.Bold = true;
-                                        //}
+                                string statusAlarmDB = Check_Operator("AlarmDB", OPID);
+                                if (statusAlarmDB == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 8).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 8).Style.Font.Bold = true;
+                                }
 
-                                        //string statusTRProcessControl = Check_Operator("TRProcessControl", OPID);
-                                        //if (statusTRProcessControl == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 12).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 12).Style.Font.Bold = true;
-                                        //}
+                                string statusNonDb = Check_Operator("NonDb", OPID);
+                                if (statusNonDb == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 9).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 9).Style.Font.Bold = true;
+                                }
+                                string statusPlatingDB = Check_Operator("PlatingDB", OPID);
+                                if (statusPlatingDB == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 11).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 11).Style.Font.Bold = true;
+                                }
 
-                                        //string statusTcOPOLLO = Check_Operator("TcOPOLLO", OPID);
-                                        //if (statusTcOPOLLO == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 13).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 13).Style.Font.Bold = true;
-                                        //}
-                                        //string statusTCNonDB = Check_Operator("TCNonDB", OPID);
-                                        //if (statusTCNonDB == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 14).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 14).Style.Font.Bold = true;
-                                        //}
-                                        //string statusMCRLT = Check_Operator("MCRLT", OPID);
-                                        //if (statusMCRLT == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 15).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 15).Style.Font.Bold = true;
-                                        //}
+                                string statusTRProcessControl = Check_Operator("TRProcessControl", OPID);
+                                if (statusTRProcessControl == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 12).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 12).Style.Font.Bold = true;
+                                }
 
+                                string statusTcOPOLLO = Check_Operator("TcOPOLLO", OPID);
+                                if (statusTcOPOLLO == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 13).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 13).Style.Font.Bold = true;
+                                }
+                                string statusTCNonDB = Check_Operator("TCNonDB", OPID);
+                                if (statusTCNonDB == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 14).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 14).Style.Font.Bold = true;
+                                }
+                                string statusMCRLT = Check_Operator("MCRLT", OPID);
+                                if (statusMCRLT == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 15).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 15).Style.Font.Bold = true;
+                                }
 
 
-                                        //string statusMCRSpareParts = Check_Operator("MCRSpareParts", OPID);
-                                        //if (statusMCRSpareParts == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 16).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 16).Style.Font.Bold = true;
-                                        //}
 
-                                        //string statusMCR = Check_Operator("MCR", OPID);
-                                        //if (statusMCR == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 17).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 17).Style.Font.Bold = true;
-                                        //}
+                                string statusMCRSpareParts = Check_Operator("MCRSpareParts", OPID);
+                                if (statusMCRSpareParts == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 16).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 16).Style.Font.Bold = true;
+                                }
 
-                                        ////string statusMCRTPProcessControl = Check_Operator("MCRTPProcessControl", OPID);
-                                        ////if (statusMCRTPProcessControl == "true")
-                                        ////{
-                                        ////    worksheet2.Cell(nrow + 8, ncol + 18).Value = "O";
-                                        ////    worksheet2.Cell(nrow + 8, ncol + 18).Style.Font.Bold = true;
-                                        ////}
+                                string statusMCR = Check_Operator("MCR", OPID);
+                                if (statusMCR == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 17).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 17).Style.Font.Bold = true;
+                                }
 
-                                        //string statusMCRMaterialControl = Check_Operator("MCRMaterialControl", OPID);
-                                        //if (statusMCRMaterialControl == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 20).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 20).Style.Font.Bold = true;
+                                //string statusMCRTPProcessControl = Check_Operator("MCRTPProcessControl", OPID);
+                                //if (statusMCRTPProcessControl == "true")
+                                //{
+                                //    worksheet2.Cell(nrow + 8, ncol + 18).Value = "O";
+                                //    worksheet2.Cell(nrow + 8, ncol + 18).Style.Font.Bold = true;
+                                //}
 
-                                        //    worksheet2.Cell(nrow + 8, ncol + 21).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 21).Style.Font.Bold = true;
-
-                                        //    worksheet2.Cell(nrow + 8, ncol + 22).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 22).Style.Font.Bold = true;
-                                        //}
-
-
-                                        //string statusMCRProcessControl = Check_Operator("MCRProcessControl", OPID);
-                                        //if (statusMCRProcessControl == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 23).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 23).Style.Font.Bold = true;
-                                        //}
+                                string statusMCRMaterialControl = Check_Operator("MCRMaterialControl", OPID);
+                                if (statusMCRMaterialControl == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 20).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 20).Style.Font.Bold = true;
+                                                           
+                                    worksheet2.Cell(nrow + 10, ncol + 21).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 21).Style.Font.Bold = true;
+                                                           
+                                    worksheet2.Cell(nrow + 10, ncol + 22).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 22).Style.Font.Bold = true;
+                                }
 
 
-                                        //string statusOPMSparepart = Check_Operator("OPMSparepart", OPID);
-                                        //if (statusOPMSparepart == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 24).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 24).Style.Font.Bold = true;
-                                        //}
-
-                                        //string statusOPMProcessControl = Check_Operator("OPMProcessControl", OPID);
-                                        //if (statusOPMProcessControl == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 25).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 25).Style.Font.Bold = true;
-                                        //}
+                                string statusMCRProcessControl = Check_Operator("MCRProcessControl", OPID);
+                                if (statusMCRProcessControl == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 23).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 23).Style.Font.Bold = true;
+                                }
 
 
-                                        //string statusGFDReport = Check_Operator("GFDReport", OPID);
-                                        //if (statusGFDReport == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 28).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 28).Style.Font.Bold = true;
-                                        //}
+                                string statusOPMSparepart = Check_Operator("OPMSparepart", OPID);
+                                if (statusOPMSparepart == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 24).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 24).Style.Font.Bold = true;
+                                }
+
+                                string statusOPMProcessControl = Check_Operator("OPMProcessControl", OPID);
+                                if (statusOPMProcessControl == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 25).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 25).Style.Font.Bold = true;
+                                }
 
 
-                                        //string statusOneWord = Check_Operator("OneWord", OPID);
-                                        //if (statusOneWord == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 30).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 30).Style.Font.Bold = true;
-                                        //}
-
-                                        //string statusTCCostDb = Check_Operator("TCCostDb", OPID);
-                                        //if (statusTCCostDb == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 31).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 31).Style.Font.Bold = true;
-                                        //}
-
-                                        //string statusTRCostDb = Check_Operator("TRCostDb", OPID);
-                                        //if (statusOPMProcessControl == "true")
-                                        //{
-                                        //    worksheet2.Cell(nrow + 8, ncol + 32).Value = "O";
-                                        //    worksheet2.Cell(nrow + 8, ncol + 32).Style.Font.Bold = true;
-                                        //}
+                                string statusGFDReport = Check_Operator("GFDReport", OPID);
+                                if (statusGFDReport == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 28).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 28).Style.Font.Bold = true;
+                                }
 
 
-                                    }
+                                string statusOneWord = Check_Operator("OneWord", OPID);
+                                if (statusOneWord == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 30).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 30).Style.Font.Bold = true;
+                                }
+
+                                string statusTCCostDb = Check_Operator("TCCostDb", OPID);
+                                if (statusTCCostDb == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 31).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 31).Style.Font.Bold = true;
+                                }
+
+                                string statusTRCostDb = Check_Operator("TRCostDb", OPID);
+                                if (statusOPMProcessControl == "true")
+                                {
+                                    worksheet2.Cell(nrow + 10, ncol + 32).Value = "O";
+                                    worksheet2.Cell(nrow + 10, ncol + 32).Style.Font.Bold = true;
+                                }
+
+
+
 
                             }
-                            if (ncol == 11)
+                            if (ncol == 1)
                             {
-                                worksheet.Cell(nrow, ncol).Value = Convert.ToDateTime(datatb.Rows[nrow - 2][ncol - 1]).ToString("d-MMM-yy");
-                                worksheet.Cell(nrow, ncol).Style.DateFormat.Format = "d-MMM-yy";
+                                 worksheet.Cell(nrow + 2, ncol).Value = nrow + 1;
+                            }
+                            else if (ncol == 11)
+                            {
+                                worksheet.Cell(nrow + 2, ncol).Value = Convert.ToDateTime(datatb.Rows[nrow][ncol - 1]).ToString("d-MMM-yy");
+                                worksheet.Cell(nrow + 2, ncol).Style.DateFormat.Format = "d-MMM-yy";
                             }
                             else
                             {
-                                worksheet.Cell(nrow, ncol).Value = datatb.Rows[nrow - 2][ncol - 1].ToString();
+                                worksheet.Cell(nrow + 2, ncol).Value = datatb.Rows[nrow][ncol - 1].ToString();
                             }
 
-                            if (datatb.Rows[nrow - 2][1].ToString() != "")
+                            if (datatb.Rows[nrow][1].ToString() != "")
                             {
-                                worksheet.Cell(nrow, ncol).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-                                worksheet.Cell(nrow, ncol).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                                worksheet.Row(nrow).Height = 12.75;
+                                worksheet.Cell(nrow + 2, ncol).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                                worksheet.Cell(nrow + 2, ncol).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                                worksheet.Row(nrow + 2).Height = 12.75;
                             }
 
 
                         }
-                        worksheet2.Cell(nrow + 8, 1).Value = datatb.Rows[nrow - 2][0].ToString();
-                        worksheet2.Cell(nrow + 8, 2).Value = datatb.Rows[nrow - 2][8].ToString();
-                        worksheet2.Cell(nrow + 8, 3).Value = datatb.Rows[nrow - 2][1].ToString();
-                        worksheet2.Cell(nrow + 8, 4).Value = datatb.Rows[nrow - 2][2].ToString();
-                        worksheet2.Cell(nrow + 8, 5).Value = datatb.Rows[nrow - 2][3].ToString();
-                        worksheet2.Cell(nrow + 8, 6).Value = datatb.Rows[nrow - 2][4].ToString();
+                        worksheet2.Cell(nrow + 10, 1).Value = nrow + 1;
+                        worksheet2.Cell(nrow + 10, 2).Value = datatb.Rows[nrow][8].ToString();
+                        worksheet2.Cell(nrow + 10, 3).Value = datatb.Rows[nrow][1].ToString();
+                        worksheet2.Cell(nrow + 10, 4).Value = datatb.Rows[nrow][2].ToString();
+                        worksheet2.Cell(nrow + 10, 5).Value = datatb.Rows[nrow][3].ToString();
+                        worksheet2.Cell(nrow + 10, 6).Value = datatb.Rows[nrow][4].ToString();
 
-                        worksheet3.Cell(nrow + 8, 1).Value = datatb.Rows[nrow - 2][0].ToString();
-                        worksheet3.Cell(nrow + 8, 2).Value = datatb.Rows[nrow - 2][8].ToString();
-                        worksheet3.Cell(nrow + 8, 3).Value = datatb.Rows[nrow - 2][1].ToString();
-                        worksheet3.Cell(nrow + 8, 4).Value = datatb.Rows[nrow - 2][2].ToString();
-                        worksheet3.Cell(nrow + 8, 5).Value = datatb.Rows[nrow - 2][3].ToString();
-                        worksheet3.Cell(nrow + 8, 6).Value = datatb.Rows[nrow - 2][4].ToString();
+                        worksheet3.Cell(nrow + 10, 1).Value = nrow + 1;
+                        worksheet3.Cell(nrow + 10, 2).Value = datatb.Rows[nrow][8].ToString();
+                        worksheet3.Cell(nrow + 10, 3).Value = datatb.Rows[nrow][1].ToString();
+                        worksheet3.Cell(nrow + 10, 4).Value = datatb.Rows[nrow][2].ToString();
+                        worksheet3.Cell(nrow + 10, 5).Value = datatb.Rows[nrow][3].ToString();
+                        worksheet3.Cell(nrow + 10, 6).Value = datatb.Rows[nrow][4].ToString();
 
 
-                        worksheet4.Cell(nrow + 8, 1).Value = datatb.Rows[nrow - 2][0].ToString();
-                        worksheet4.Cell(nrow + 8, 2).Value = datatb.Rows[nrow - 2][8].ToString();
-                        worksheet4.Cell(nrow + 8, 3).Value = datatb.Rows[nrow - 2][1].ToString();
-                        worksheet4.Cell(nrow + 8, 4).Value = datatb.Rows[nrow - 2][2].ToString();
-                        worksheet4.Cell(nrow + 8, 5).Value = datatb.Rows[nrow - 2][3].ToString();
-                        worksheet4.Cell(nrow + 8, 6).Value = datatb.Rows[nrow - 2][4].ToString();
-                        if (datatb.Rows[nrow - 2][4].ToString() != "")
+                        worksheet4.Cell(nrow + 10, 1).Value = nrow + 1;
+                        worksheet4.Cell(nrow + 10, 2).Value = datatb.Rows[nrow][8].ToString();
+                        worksheet4.Cell(nrow + 10, 3).Value = datatb.Rows[nrow][1].ToString();
+                        worksheet4.Cell(nrow + 10, 4).Value = datatb.Rows[nrow][2].ToString();
+                        worksheet4.Cell(nrow + 10, 5).Value = datatb.Rows[nrow][3].ToString();
+                        worksheet4.Cell(nrow + 10, 6).Value = datatb.Rows[nrow][4].ToString();
+                        if (datatb.Rows[nrow][4].ToString() != "")
                         {
-                            worksheet2.Cell(nrow + 8, 1).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 8, 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet2.Cell(nrow + 8, 2).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 8, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet2.Cell(nrow + 8, 3).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 8, 3).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet2.Cell(nrow + 8, 4).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 8, 4).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet2.Cell(nrow + 8, 5).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 8, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet2.Cell(nrow + 8, 6).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 8, 6).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-
-
-                            worksheet3.Cell(nrow + 8, 1).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 8, 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet3.Cell(nrow + 8, 2).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 8, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet3.Cell(nrow + 8, 3).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 8, 3).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet3.Cell(nrow + 8, 4).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 8, 4).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet3.Cell(nrow + 8, 5).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 8, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet3.Cell(nrow + 8, 6).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 8, 6).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet3.Cell(nrow + 8, 7).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 8, 7).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-
-                            worksheet4.Cell(nrow + 8, 1).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 8, 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet4.Cell(nrow + 8, 2).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 8, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet4.Cell(nrow + 8, 3).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 8, 3).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet4.Cell(nrow + 8, 4).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 8, 4).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet4.Cell(nrow + 8, 5).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 8, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet4.Cell(nrow + 8, 6).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 8, 6).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet4.Cell(nrow + 8, 7).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 8, 7).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet4.Cell(nrow + 8, 8).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 8, 8).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            lastRow = nrow + 8;
+                            worksheet2.Cell(nrow + 10, 1).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 10, 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet2.Cell(nrow + 10, 2).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 10, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet2.Cell(nrow + 10, 3).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 10, 3).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet2.Cell(nrow + 10, 4).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 10, 4).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet2.Cell(nrow + 10, 5).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 10, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet2.Cell(nrow + 10, 6).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet2.Cell(nrow + 10, 6).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                                                                                                                                       
+                                                                                                                                       
+                            worksheet3.Cell(nrow + 10, 1).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 10, 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet3.Cell(nrow + 10, 2).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 10, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet3.Cell(nrow + 10, 3).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 10, 3).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet3.Cell(nrow + 10, 4).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 10, 4).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet3.Cell(nrow + 10, 5).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 10, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet3.Cell(nrow + 10, 6).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 10, 6).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet3.Cell(nrow + 10, 7).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet3.Cell(nrow + 10, 7).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                                                                                                                                       
+                            worksheet4.Cell(nrow + 10, 1).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 10, 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet4.Cell(nrow + 10, 2).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 10, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet4.Cell(nrow + 10, 3).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 10, 3).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet4.Cell(nrow + 10, 4).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 10, 4).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet4.Cell(nrow + 10, 5).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 10, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet4.Cell(nrow + 10, 6).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 10, 6).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet4.Cell(nrow + 10, 7).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 10, 7).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet4.Cell(nrow + 10, 8).Style.Border.InsideBorder = XLBorderStyleValues.Thin; worksheet4.Cell(nrow + 10, 8).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            lastRow = nrow + 10;
                         }
 
                     }
@@ -864,13 +891,18 @@ namespace Import_Freight_BOI.Controllers
                     worksheet2.Range("G10:AH" + lastRow).Style.Border.RightBorder = XLBorderStyleValues.Thin;
                     worksheet2.Range("G" + lastRow + ":AH" + lastRow).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
 
-                    string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + fileName;
+                   
+                    string pathload =  "\\Content\\Excel\\" + fileName;
+                    string pathfull = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\Excel\\" + fileName;
                     using (var stream = new MemoryStream())
                     {
                         Workbook.SaveAs(stream);
-                        Workbook.SaveAs(path);
-                        var content = stream.ToArray();
-                        return path;
+                        Workbook.SaveAs(pathfull);
+                        //stream.ToArray();
+                        //return File(stream, "application/octet-stream", fileName);
+                        FileStream fileStream = new FileStream(pathfull, FileMode.Open, FileAccess.Read);
+                        //return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                        return Json(pathload);
                     }
 
 
@@ -880,12 +912,88 @@ namespace Import_Freight_BOI.Controllers
             }
             catch (Exception ex)
             {
-                return ex.ToString();
+                throw ex;
             }
 
 
         }
 
+        public JsonResult ExcelTemplate()
+        {
+            try
+            {
+                using (var Workbook = new XLWorkbook())
+                {
+                    IXLWorksheet worksheet =
+                   Workbook.Worksheets.Add("sheet1");
+                    //-----------------------header
+                    worksheet.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    worksheet.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                    worksheet.Range("A1:C1").Merge().Value = "RESIGNATION";
+                    worksheet.Cell("A1").Style.Font.Bold = true;
+                    worksheet.Style.Font.FontName = "Arial";
+                    worksheet.Cell("A1").Style.Font.FontSize = 14;
+                    worksheet.Range("A1:C1").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                    worksheet.Range("A1:C1").Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                    worksheet.Row(1).Height = 34.50;
+                   
+                    //---------------------column
+                    worksheet.Range("A2:A3").Merge().Value = "NO.";
+                     worksheet.Range("B2:B3").Merge().Value = "CODE";
+                     worksheet.Range("C2:D3").Merge().Value = "NAME";
+                     worksheet.Range("E2:E3").Merge().Value = "POSITION";
+                     worksheet.Range("F2:F3").Merge().Value = "LEVEL";
+                     worksheet.Range("G2:G3").Merge().Value = "SECT.";
+                     worksheet.Range("H2:H3").Merge().Value = "DEPT.";
+                     worksheet.Range("I2:I3").Merge().Value = "DIV.";
+                     worksheet.Range("J2:J3").Merge().Value = " HQ.";
+                     worksheet.Range("K2:K3").Merge().Value = "RESIGNED";
+
+                    //--------------------style Column
+                    worksheet.Range("A2:K3").Style.Font.FontSize = 8;
+                    worksheet.Range("A2:K3").Style.Fill.BackgroundColor = XLColor.FromArgb(204, 255, 204);
+                   
+
+                    worksheet.Range("A4:K5").Style.Font.FontSize = 9;
+                    worksheet.Range("C4:D5").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                    worksheet.Range("C4:D5").Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                    worksheet.Range("A2:K5").Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                    worksheet.Range("A2:K5").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    worksheet.SheetView.FreezeColumns(3);
+                    worksheet.SheetView.FreezeRows(3);
+                    worksheet.Column(1).Width = 4.29;  worksheet.Column(2).Width = 8.43;
+                    worksheet.Column(3).Width = 19.43;  worksheet.Column(4).Width = 4.71;
+                    worksheet.Column(5).Width = 20.71;  worksheet.Column(6).Width = 3.86;
+                    worksheet.Column(7).Width = 48.14;  worksheet.Column(8).Width = 34.71;
+                    worksheet.Column(9).Width = 33.43;  worksheet.Column(10).Width = 15.57; worksheet.Column(11).Width = 10;
+                    worksheet.Row(2).Height = 24.75; worksheet.Row(3).Height = 30;
+                    worksheet.Row(4).Height = 30; worksheet.Row(5).Height = 30;
+                    worksheet.RowHeight = 30;
+                    worksheet.Range("F2:F3").Style.Alignment.SetTextRotation(90);
+                    //---------------------
+
+
+                    string pathload = "\\Content\\Excel\\OperatorResignTemplate.xlsx";
+                    string pathfull = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\Excel\\OperatorResignTemplate.xlsx";
+                    using (var stream = new MemoryStream())
+                    {
+                        Workbook.SaveAs(stream);
+                        Workbook.SaveAs(pathfull);
+                        //stream.ToArray();
+                        //return File(stream, "application/octet-stream", fileName);
+                        FileStream fileStream = new FileStream(pathfull, FileMode.Open, FileAccess.Read);
+                        //return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                        return Json(pathload);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+             
+        }
 
         public string Check_Operator(string Servername, string OPID)
         {
@@ -917,7 +1025,15 @@ namespace Import_Freight_BOI.Controllers
 
         }
 
+        public JsonResult GetDdl_Resign()
+        {
+            var query = "SELECT ResignDateMaking  FROM [ImportExportDB].[dbo].[OperatorsResign] group by ResignDateMaking order by ResignDateMaking DESC";
+            var mgrSql = new mgrSQLConnect(configuration);
 
+            var dt = mgrSql.GetDatatables(query);
+
+            return Json(data: dt);
+        }
 
         public IActionResult FrmTest()
         {
@@ -950,12 +1066,18 @@ namespace Import_Freight_BOI.Controllers
                 HttpResponseMessage resp = client.GetAsync("https://" + host + "/api/GetOperatorsResign").Result;
                 resp.EnsureSuccessStatusCode();
 
-                var Dt = resp.Content.ReadAsStringAsync().Result;
-                var result = Json(new { data = Dt });
-                return Json(Dt);
+                var Dt = (DataTable)JsonConvert.DeserializeObject(resp.Content.ReadAsStringAsync().Result , (typeof(DataTable)));
+                var JsonData = resp.Content.ReadAsStringAsync().Result;
+                //var result = Json(new { data = Dt });
+                return Json(data : Dt);
             }
           
            
+        }
+
+        public ActionResult Frm_NewLayout()
+        {
+            return View();
         }
 
 
