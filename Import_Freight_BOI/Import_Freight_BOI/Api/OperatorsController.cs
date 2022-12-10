@@ -36,6 +36,15 @@ namespace Import_Freight_BOI.Api
         //    return response;
         //}
 
+        [Route("api/MCRBCP/{id}")]
+        public DataTable MCRBCP(string id)
+        {
+            string Strsql = "select expire from [MCR].[dbo].[Operator] where OPID ='" + id + "'";
+            var ObjRun = new mgrSQLConnect(_configuration);
+            DataTable response = new DataTable();
+            response = ObjRun.GetDatatables_SrvBCP(Strsql);
+            return response;
+        }
 
         [Route("api/MCRMaterialControl/{id}")]
         public string MCRMaterialControl(string id)
@@ -403,6 +412,11 @@ namespace Import_Freight_BOI.Api
             response = ObjRun.GetDatatables(Strsql);
             return response;
         }
+
+
+
+
+
 
     }
 

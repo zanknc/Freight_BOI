@@ -56,6 +56,40 @@ namespace Import_Freight_BOI.Models.TSQL
             }
         }
 
+
+        public DataTable GetDatatables_SrvBCP(string Sql)
+        {
+            var constr = configuration.GetConnectionString("CONBCP");
+            string consString = "Data Source=RTHBCP;Initial Catalog=MCR;Persist Security Info=True;User ID=sa;Password=pwpolicy;";
+            //var conGFDReport = configuration.GetConnectionString("Con_GFDReport");
+            var dt = new DataTable();
+
+
+            try
+            {
+                var query = Sql;
+
+                var ds = new DataSet();
+                using (var con = new SqlConnection(consString))
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        var adpterdata = new SqlDataAdapter();
+                        adpterdata.SelectCommand = new SqlCommand(query, con);
+                        adpterdata.Fill(dt);
+                        con.Close();
+                        return dt;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var dsa = e;
+                return dt;
+            }
+        }
         public string Get_RTHSRVM03(string Sql)
         {
             //string strConString = @ "Data Source=WELCOME-PC\SQLSERVER2008;Initial Catalog=MyDB;Integrated Security=True";

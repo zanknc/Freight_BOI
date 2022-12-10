@@ -33,7 +33,8 @@ namespace Import_Freight_BOI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //return View();
+            return RedirectToAction("Login", "Manage_Freight");
         }
 
         public IActionResult Privacy()

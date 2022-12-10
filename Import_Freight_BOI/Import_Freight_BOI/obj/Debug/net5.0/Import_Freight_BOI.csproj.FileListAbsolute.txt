@@ -302,3 +302,4 @@ E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debu
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Razor\Layout\_Menu_Test.cshtml.g.cs
 E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\obj\Debug\net5.0\Razor\Views\Resign\Frm_NewLayout.cshtml.g.cs
+E:\Github\Freight_BOI\Freight_BOI\Import_Freight_BOI\Import_Freight_BOI\bin\Debug\net5.0\Web.Public_Zank.config
